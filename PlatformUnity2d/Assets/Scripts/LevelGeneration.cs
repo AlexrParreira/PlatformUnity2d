@@ -4,25 +4,27 @@ using UnityEngine;
 
 public class LevelGeneration : MonoBehaviour
 {
-    
-    [SerializeField] private Transform levelPart;
-    [SerializeField] private Transform levelPart_Start;
+    public GameObject platform;
+    public Transform generation;
+    public float distance;
 
-   
-   private void Awake(){
-     Transform lastLevelTransform;
-     lastLevelTransform = SpawnLevelPart(levelPart_Start.Find("End_Position").position);
-    lastLevelTransform = SpawnLevelPart(lastLevelTransform.Find("End_Position").position);
-    lastLevelTransform = SpawnLevelPart(lastLevelTransform.Find("End_Position").position);
-    lastLevelTransform = SpawnLevelPart(lastLevelTransform.Find("End_Position").position);
-    lastLevelTransform = SpawnLevelPart(lastLevelTransform.Find("End_Position").position);
-    lastLevelTransform = SpawnLevelPart(lastLevelTransform.Find("End_Position").position);
-      
-      
-   }
-   
-   private Transform SpawnLevelPart(Vector3 spawnPosition){
-       Transform LevelPartTransform = Instantiate(levelPart, spawnPosition, Quaternion.identity);
-       return LevelPartTransform;
-   }
+    private float platformWidth;
+    private float platformHeight;
+    
+    void Start()
+    {
+        platformWidth = platform.GetComponent<BoxCollider2D>().size.x;
+        platformHeight = platform.transform.position.y;
+    }
+
+
+    void Update()
+    {
+        if(transform.position.x < generation.position.x){
+            transform.position = new Vector3(transform.position.x + platformWidth + distance, platformHeight + Random.Range(-3.0f, 3.0f), transform.position.z);
+
+
+            Instantiate(platform, transform.position, transform.rotation);
+        }
+    }
 }
